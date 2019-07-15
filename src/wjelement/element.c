@@ -208,10 +208,8 @@ EXPORT XplBool WJERename(WJElement document, const char *name)
 
 static WJElement _WJELoad(_WJElement *parent, WJReader reader, char *where, WJELoadCB loadcb, void *data, const char *file, const int line)
 {
-	char		*current, *name, *value;
+	char		*current, *name;
 	_WJElement	*l = NULL;
-	XplBool		complete;
-	size_t		actual, used, len;
 
 	if (!reader) {
 		return((WJElement) _WJENew(NULL, NULL, 0, file, line));
@@ -257,27 +255,9 @@ static WJElement _WJELoad(_WJElement *parent, WJReader reader, char *where, WJEL
 				break;
 
 			case WJR_TYPE_STRING:
-				actual			= 0;
-				used			= 0;
-				len				= 0;
-				complete		= FALSE;
 				l->value.string	= NULL;
 				l->pub.length	= 0;
-
-				do {
-					if ((value = WJRStringEx(&complete, &len, reader))) {
-						if (used + len >= actual) {
-							l->value.string = MemMallocEx(l->value.string,
-								len + 1 + used, &actual, TRUE, TRUE);
-							MemUpdateOwner(l->value.string, file, line);
-						}
-
-						memcpy(l->value.string + used, value, len);
-						used += len;
-						l->value.string[used] = '\0';
-						l->pub.length = used;
-					}
-				} while (!complete);
+				l->value.string = WJRStringLoad(&l->pub.length,reader);
 				break;
 
 			case WJR_TYPE_NUMBER:

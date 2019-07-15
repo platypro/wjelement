@@ -1287,6 +1287,38 @@ EXPORT char * WJRStringEx(XplBool *complete, size_t *length, WJReader indoc)
 	return(NULL);
 }
 
+EXPORT char * WJRStringLoad(size_t *length, WJReader ndoc)
+{
+	XplBool		complete;
+	size_t		actual, used, len;
+	char *value, *result;
+	
+	actual			= 0;
+	used			= 0;
+	len				= 0;
+	complete		= FALSE;
+    result          = NULL;
+
+	do {
+		if ((value = WJRStringEx(&complete, &len, ndoc))) {
+			if (used + len >= actual) {
+				result = MemMallocEx(result,
+					len + 1 + used, &actual, TRUE, TRUE);
+				MemUpdateOwner(result, file, line);
+			}
+
+			memcpy(result + used, value, len);
+			used += len;
+			result[used] = '\0';
+			if(length) {
+              *length = used;
+            }
+		}
+	} while (!complete);
+	
+	return(result);
+}
+
 typedef enum
 {
 	WJR_TYPE_INT32 = 0,

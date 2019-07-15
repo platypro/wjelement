@@ -110,6 +110,7 @@ EXPORT char *				WJRNext(char *parent, size_t maxnamelen, WJReader doc);
 */
 EXPORT char *	   			WJRStringEx(XplBool *complete, size_t *length, WJReader doc);
 #define WJRString(c, d)		WJRStringEx((c), NULL, (d))
+EXPORT char *               WJRStringLoad(size_t *length, WJReader ndoc);
 EXPORT XplBool				WJRBoolean(WJReader doc);
 
 EXPORT int32				WJRInt32(WJReader doc);
