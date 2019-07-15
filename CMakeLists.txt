@@ -3,19 +3,21 @@ cmake_minimum_required(VERSION 2.6)
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
 
-option(STATIC_LIB "Compile as static libraries" OFF)
+option(WJE_BUILD_CLI "Build the command line interface" ON)
 
-if(STATIC_LIB)
+option(WJE_STATIC_LIB "Compile as static libraries" OFF)
+if(WJE_STATIC_LIB)
   set(BUILD_SHARED_LIBS OFF)
   add_definitions(-DCOMPILE_AS_STATIC)
-else(STATIC_LIB)
+else(WJE_STATIC_LIB)
   set(BUILD_SHARED_LIBS ON)
-endif(STATIC_LIB)
+endif(WJE_STATIC_LIB)
 
-option(DISTINGUISH_INTEGERS "Distinguish between integer and non-integer numbers" OFF)
-if(DISTINGUISH_INTEGERS)
+option(WJE_DISTINGUISH_INTEGERS "Distinguish between integer and non-integer numbers" OFF)
+if(WJE_DISTINGUISH_INTEGERS)
   add_definitions(-DWJE_DISTINGUISH_INTEGER_TYPE)
 endif()
+
 
 if("${CMAKE_SYSTEM}" MATCHES "Linux")
   add_definitions(-D_GNU_SOURCE)
@@ -32,7 +34,7 @@ set(BIN_DEST_DIR ${CMAKE_INSTALL_PREFIX}/bin)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   add_definitions(-DDEBUG)
-  option(SHOWNOTES "Show preprocessor notes" OFF)
+  option(WJE_SHOWNOTES "Show preprocessor notes" OFF)
 
   if(CMAKE_COMPILER_IS_GNUCC)
 	# GCC specific debug options
