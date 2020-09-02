@@ -97,6 +97,14 @@ typedef enum {
 
 EXPORT char *				WJRNext(char *parent, size_t maxnamelen, WJReader doc);
 
+EXPORT XplBool      WJRCheck(char* src, WJRType type, char* cmp);
+
+/* Compare WJReader string argument to match list.
+ * Returns the match found (1-based). Otherwise returns 0 when not matching
+ * Match list has to be in alphabetical (ASCII) order
+ */
+EXPORT int WJRStrCmp(WJReader r, char** match, int match_count, size_t size, size_t offset);
+
 /*
 	Return the value of the last object returned by WJRNext().	The calling
 	application is expected to know the type of the value, and call the

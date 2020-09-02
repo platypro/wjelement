@@ -291,6 +291,33 @@ static int WJRFillBuffer(WJIReader *doc)
 	return(-1);
 }
 
+XplBool WJRCheck(char* src, WJRType type, char* cmp)
+{
+  return (*src == type && !strcmp(src + 1, cmp));
+}
+
+int WJRStrCmp(WJReader r, char** match, int match_count, size_t size, size_t offset)
+{
+  int bound_lower = 0;
+  int at = 0;
+  XplBool complete = FALSE;
+  while(!complete)
+  {
+    for(char* cmp = WJRString(&complete, r); *cmp; cmp++)
+    {
+      char cmp2;
+      while((cmp2 = ((*((char**)(((char*)match) + bound_lower * size + offset)))[at])) < *cmp)
+      {
+        bound_lower++;
+        if(bound_lower == match_count) return 0;
+      }
+      if(cmp2 == *cmp) at++;
+      if(cmp2 > *cmp) return 0;
+    }
+  }
+  return bound_lower + 1;
+}
+
 /*
 	Determine what type the next value is, and position the read pointer so that
 	the value can be parsed.
