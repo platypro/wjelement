@@ -218,8 +218,8 @@ EXPORT int stripatn(char *str, char *pattern, size_t len);
 
 EXPORT char * strspace( char *source );
 
-#if defined(_WIN32)
-EXPORT char * strndup(char* p, size_t maxlen);
-#endif
+//#if defined(_WIN32)
+//EXPORT char * strndup(char* p, size_t maxlen);
+//#endif
 
 #endif
